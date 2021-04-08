@@ -123,6 +123,10 @@ void Scene::init()
 		crist->setModelMat(translate(dmat4(1), dvec3(0.0, ladoCrist/6, 0.0)));
 	}
 
+	else if (mId == 2) {
+		
+	}
+
     // Graphics objects (entities) of the scene
 	//-------------------------------------------------------------------------
 	//EJER 1
