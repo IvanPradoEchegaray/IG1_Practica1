@@ -105,11 +105,6 @@ void Camera::setAxes() {
 	mFront = row(mViewMat, 2);
 }
 
-void Camera::setVM() {
-	mViewMat = lookAt(mEye, mLook, mUp);
-	setAxes();
-}
-
 void Camera::setSize(GLdouble xw, GLdouble yh) 
 {
 	xRight = xw / 2.0;
@@ -130,9 +125,11 @@ void Camera::setScale(GLdouble s)
 
 void Camera::setPM() 
 {
-	if (bOrto) { //  if orthogonal projection
-		mProjMat = ortho(xLeft*mScaleFact, xRight*mScaleFact, yBot*mScaleFact, yTop*mScaleFact, mNearVal, mFarVal);
-		// glm::ortho defines the orthogonal projection matrix
+	if (bOrto) {
+		mProjMat = ortho(xLeft, xRight, yBot, yTop, mNearVal, mFarVal);
+	}
+	else {
+		mProjMat = frustum(xLeft, xRight, yBot, yTop, mNearVal, mFarVal);
 	}
 }
 //-------------------------------------------------------------------------

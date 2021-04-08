@@ -123,6 +123,9 @@ void IG1App::key(unsigned char key, int x, int y)
 	case '-':
 		mCamera->setScale(-0.01);  // zoom out (decreases the scale)
 		break;
+	case 'p':
+		mCamera->changePrj();	//toggles between orthogonal and perspective view
+		break;
 	case 'l':
 		mCamera->set3D();
 		break;
@@ -161,22 +164,16 @@ void IG1App::specialKey(int key, int x, int y)
 	
 	switch (key) {
 	case GLUT_KEY_RIGHT:
-		if (mdf == GLUT_ACTIVE_CTRL)
-			mCamera->pitch(-5);   // rotates -1 on the X axis
-		else
-			mCamera->pitch(5);    // rotates 1 on the X axis
+		mCamera->moveLR(5);   // move right
 		break;
 	case GLUT_KEY_LEFT:
-		if (mdf == GLUT_ACTIVE_CTRL)
-		    mCamera->yaw(5);      // rotates 1 on the Y axis 
-		else 
-			mCamera->yaw(-5);     // rotate -1 on the Y axis 
+		mCamera->moveLR(-5);  // move left
 		break;
 	case GLUT_KEY_UP:
-		mCamera->roll(5);    // rotates 1 on the Z axis
+		mCamera->moveUD(5);    // move up
 		break;
 	case GLUT_KEY_DOWN:
-		mCamera->roll(-5);   // rotates -1 on the Z axis
+		mCamera->moveUD(-5);   // move down
 		break;
 	default:
 		need_redisplay = false;

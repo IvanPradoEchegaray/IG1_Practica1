@@ -39,12 +39,13 @@ public:
 	// sets axes
 	void setAxes();
 
-	void setVM();
-
 	// sets scene visible area size 
 	void setSize(GLdouble xw, GLdouble yh);
 	// updates the scale factor 
 	void setScale(GLdouble s);
+
+	// toggles projection mode between orthogonal and perspective
+	void changePrj() { bOrto = !bOrto; }
 
 	// transfers its viewport, the view matrix and projection matrix to the GPU
 	void upload() const { mViewPort->upload();  uploadVM(); uploadPM(); }; 
