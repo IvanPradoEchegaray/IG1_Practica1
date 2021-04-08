@@ -124,10 +124,13 @@ void Scene::init()
 	}
 
 	else if (mId == 2) {
-		
+		glClearColor(10.0 / 255.0, 70.0 / 255.0, 70.0 / 255.0, 1.0);
+
+		gObjects.push_back(new EjesRGB(400.0));
 	}
 
-    // Graphics objects (entities) of the scene
+	/*
+    Graphics objects (entities) of the scene
 	//-------------------------------------------------------------------------
 	//EJER 1
 	/*Poligono* n = new Poligono(3, 100);
@@ -136,7 +139,7 @@ void Scene::init()
 	c->modColor(dvec4(1.0, 0.0, 1.0, 1.0));
 
 	gObjects.push_back(n);
-	gObjects.push_back(c);*/
+	gObjects.push_back(c);
 	//-------------------------------------------------------------------------
 	//EJER4
 		//Rectangulo
@@ -145,7 +148,7 @@ void Scene::init()
 	//	//RectangulorRGB
 	/*RectanguloRGB* rRGB = new RectanguloRGB(1000, 800);
 	gObjects.push_back(rRGB);
-	rRGB->setModelMat(translate(dmat4(1), dvec3(0, 0, -100)));*/
+	rRGB->setModelMat(translate(dmat4(1), dvec3(0, 0, -100)));
 	//gObjects.push_back(new EjesRGB(400.0));
 	//-------------------------------------------------------------------------
 	//EJER2
@@ -163,7 +166,8 @@ void Scene::init()
 	/*TrianguloRGB* t = new TrianguloRGB();
 
 	gObjects.push_back(t);
-	gObjects.push_back(new EjesRGB(700.0));*/
+	gObjects.push_back(new EjesRGB(700.0));
+	*/
 }
 //-------------------------------------------------------------------------
 void Scene::free() 
