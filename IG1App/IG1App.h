@@ -51,7 +51,8 @@ protected:
 	void free();   
 	void update();
 
-	void display() const;   // the scene
+	void display();   // the scene
+	void display2V();
 	void resize(int newWidth, int newHeight);   // the viewport (without changing the scale) 
 	void key(unsigned char key, int x, int y);  // keypress event
 	void specialKey(int key, int x, int y);     // keypress event for special characters
@@ -76,6 +77,7 @@ protected:
 	int mWinH = 600;				 // window's height
 	GLuint mLastUpdateTime;			 // ultimo instante de actualiación
 	bool toggleAnimation = false;	 // activar/desactivar la animación
+	bool display2V_ = false;
 };
 //-------------------------------------------------------------------------
 

@@ -40,10 +40,18 @@ void Camera::set2D()
 
 void Camera::set3D() 
 {
-	mEye = dvec3(500, 500, 500);  
+	mEye = dvec3(700, 700, 700);  
 	mLook = dvec3(0, 10, 0);   
 	mUp = dvec3(0, 1, 0);
 	mAng = 90.0;
+	setVM();
+}
+
+void Camera::setCenital()
+{
+	mEye = dvec3(700, 700, 700);
+	mLook = dvec3(10, 0, 0);
+	mUp = dvec3(0, 1, 0);
 	setVM();
 }
 //-------------------------------------------------------------------------

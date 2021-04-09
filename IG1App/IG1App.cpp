@@ -87,14 +87,38 @@ void IG1App::free()
 }
 //-------------------------------------------------------------------------
 
-void IG1App::display() const   
+void IG1App::display()   
 {  // double buffering
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // clears the back buffer
 
-	mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
-	
+	if (!display2V_)
+		mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
+	else
+		display2V();
+
 	glutSwapBuffers();	// swaps the front and back buffer
+}
+
+void IG1App::display2V()
+{
+	// para renderizar las vistas utilizamos una cámara auxiliar:
+	Camera auxCam = *mCamera; // copiando mCamera
+	// el puerto de vista queda compartido (se copia el puntero)
+	Viewport auxVP = *mViewPort; // lo copiamos en una var. aux. para
+	// el tamaño de los 4 puertos de vista es el mismo, lo configuramos
+	mViewPort->setSize(mWinW / 2, mWinH);
+	// igual que en resize, para que no cambie la escala,
+	// tenemos que cambiar el tamaño de la ventana de vista de la cámara
+	auxCam.setSize(mViewPort->width(), mViewPort->height());
+	// vista Usuario
+	mViewPort->setPos(0, 0);
+	mScene->render(auxCam);
+	// vista Cenital
+	mViewPort->setPos(mWinW / 2, 0);
+	auxCam.setCenital();
+	mScene->render(auxCam);
+	*mViewPort = auxVP; // restaurar el puerto de vista
 }
 //-------------------------------------------------------------------------
 
@@ -117,11 +141,26 @@ void IG1App::key(unsigned char key, int x, int y)
 	switch (key) {
 	case 27:  // Escape key 
 		glutLeaveMainLoop();  // stops main loop and destroy the OpenGL context
+	case 'a':
+		mCamera->orbit(+5.0, 0.0);	// Counter-clockwise horizontal orbit
+		break;
+	case 'd':
+		mCamera->orbit(-5.0, 0.0); // Clockwise horizontal orbit
+		break;
+	case 'w':
+		mCamera->orbit(0.0, +80.0);	// Ascending vertical orbit
+		break;
+	case 's':
+		mCamera->orbit(0.0, -80.0); // Descending vertical orbit
+		break;
 	case '+':
 		mCamera->setScale(+0.01);  // zoom in  (increases the scale)
 		break;
 	case '-':
 		mCamera->setScale(-0.01);  // zoom out (decreases the scale)
+		break;
+	case 'k':
+		display2V_ = !display2V_;  // toggles 2 viewport display
 		break;
 	case 'p':
 		mCamera->changePrj();	//toggles between orthogonal and perspective view
@@ -164,16 +203,16 @@ void IG1App::specialKey(int key, int x, int y)
 	
 	switch (key) {
 	case GLUT_KEY_RIGHT:
-		mCamera->moveLR(5);   // move right
+		mCamera->moveLR(15);   // move right
 		break;
 	case GLUT_KEY_LEFT:
-		mCamera->moveLR(-5);  // move left
+		mCamera->moveLR(-15);  // move left
 		break;
 	case GLUT_KEY_UP:
-		mCamera->moveUD(5);    // move up
+		mCamera->moveUD(15);    // move up
 		break;
 	case GLUT_KEY_DOWN:
-		mCamera->moveUD(-5);   // move down
+		mCamera->moveUD(-15);   // move down
 		break;
 	default:
 		need_redisplay = false;

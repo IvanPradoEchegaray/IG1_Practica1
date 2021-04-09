@@ -23,6 +23,7 @@ public:
 	
 	void set2D();
 	void set3D();
+	void setCenital();
 	
 	void moveLR(GLdouble cs); // Left / Right
 	void moveFB(GLdouble cs); // Forward / Backward
@@ -45,7 +46,10 @@ public:
 	void setScale(GLdouble s);
 
 	// toggles projection mode between orthogonal and perspective
-	void changePrj() { bOrto = !bOrto; }
+	void changePrj() {
+		bOrto = !bOrto;
+		setPM();
+	}
 
 	// transfers its viewport, the view matrix and projection matrix to the GPU
 	void upload() const { mViewPort->upload();  uploadVM(); uploadPM(); }; 
@@ -67,7 +71,7 @@ protected:
 
 	GLdouble mRadio = 1000, mAng;
 	GLdouble xRight, xLeft, yTop, yBot;      // size of scene visible area
-	GLdouble mNearVal = 1, mFarVal = 10000;  // view volume
+	GLdouble mNearVal = 500, mFarVal = 10000;  // view volume
 	GLdouble mScaleFact = 1;   // scale factor
 	bool bOrto = true;   // orthogonal or perspective projection
 
