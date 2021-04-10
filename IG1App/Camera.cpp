@@ -49,9 +49,8 @@ void Camera::set3D()
 
 void Camera::setCenital()
 {
-	mEye = dvec3(700, 700, 700);
-	mLook = dvec3(10, 0, 0);
-	mUp = dvec3(0, 1, 0);
+	mEye = dvec3(mLook.x, mLook.y + 1000, mLook.z);
+	mUp = dvec3(-1, 0, -1);
 	setVM();
 }
 //-------------------------------------------------------------------------
