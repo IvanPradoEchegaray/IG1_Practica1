@@ -73,6 +73,9 @@ void IG1App::iniWinOpenGL()
 	glutSpecialFunc(s_specialKey);
 	glutDisplayFunc(s_display);
 	glutIdleFunc(s_update);
+	glutMouseFunc(s_mouse);
+	glutMotionFunc(s_motion);
+	glutMouseWheelFunc(s_mouseWheel);
 	
 	cout << glGetString(GL_VERSION) << '\n';
 	cout << glGetString(GL_VENDOR) << '\n';
@@ -221,6 +224,43 @@ void IG1App::specialKey(int key, int x, int y)
 
 	if (need_redisplay)
 		glutPostRedisplay(); // marks the window as needing to be redisplayed -> calls to display()
+}
+
+void IG1App::mouse(int b, int s, int x, int y) {
+	mBot = b;
+	dvec2 coord(x, y);
+	mCoord = coord;
+}
+
+void IG1App::motion(int x, int y) {
+	dvec2 mp(mCoord.x - x, mCoord.y - y);
+
+	dvec2 coord(x, y);
+	mCoord = coord;
+
+	if (mBot == GLUT_LEFT_BUTTON)
+		mCamera->orbit(mp.x * 0.05, -mp.y);
+	
+	else if (mBot == GLUT_RIGHT_BUTTON) {
+		mCamera->moveUD(mp.y);
+		mCamera->moveLR(mp.y);
+	}
+
+	glutPostRedisplay();
+}
+
+void IG1App::mouseWheel(int n, int d, int x, int y) {
+	int keyPress = glutGetModifiers();
+	
+	if (keyPress == 0) {
+		mCamera->moveFB(-d * 10.0);
+	}
+
+	else if (GLUT_ACTIVE_CTRL) {
+		mCamera->setScale(d);
+	}
+
+	glutPostRedisplay();
 }
 //-------------------------------------------------------------------------
 
