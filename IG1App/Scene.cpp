@@ -229,3 +229,7 @@ void Scene::screenShot() {
 	tex->save("screenshot.bmp");
 	delete tex;
 }
+
+void Scene::setID(int id) {
+	mId = id;
+}

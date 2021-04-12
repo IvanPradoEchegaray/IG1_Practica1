@@ -41,10 +41,16 @@ void IG1App::init()
 	// allocate memory and resources
 	mViewPort = new Viewport(mWinW, mWinH); //glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT)
 	mCamera = new Camera(mViewPort);
+	mCamera2 = new Camera(mViewPort);
 	mScene = new Scene;
+	mScene->setID(0);
+	mScene2 = new Scene;
+	mScene2->setID(1);
 	
-	mCamera->set2D();
+	mCamera->set3D();
+	mCamera2->set3D();
 	mScene->init();
+	mScene2->init();
 }
 //-------------------------------------------------------------------------
 
@@ -95,10 +101,12 @@ void IG1App::display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // clears the back buffer
 
-	if (!display2V_)
-		mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
-	else
+	if (display2V_)
 		display2V();
+	else if (display2S_)
+		display2Scenes();
+	else
+		mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
 
 	glutSwapBuffers();	// swaps the front and back buffer
 }
@@ -121,6 +129,29 @@ void IG1App::display2V()
 	mViewPort->setPos(mWinW / 2, 0);
 	auxCam.setCenital();
 	mScene->render(auxCam);
+	*mViewPort = auxVP; // restaurar el puerto de vista
+}
+
+void IG1App::display2Scenes() {
+	// para renderizar las vistas utilizamos una cámara auxiliar:
+	Camera auxCam = *mCamera; // copiando mCamera
+	Camera auxCam2 = *mCamera2;
+	// el puerto de vista queda compartido (se copia el puntero)
+	Viewport auxVP = *mViewPort; // lo copiamos en una var. aux. para
+	// el tamaño de los 4 puertos de vista es el mismo, lo configuramos
+	mViewPort->setSize(mWinW / 2, mWinH);
+	// igual que en resize, para que no cambie la escala,
+	// tenemos que cambiar el tamaño de la ventana de vista de la cámara
+	auxCam.setSize(mViewPort->width(), mViewPort->height());
+	auxCam2.setSize(mViewPort->width(), mViewPort->height());
+
+	// vista Usuario
+	mViewPort->setPos(0, 0);
+	mScene->render(auxCam);
+
+	// vista Cenital
+	mViewPort->setPos(mWinW / 2, 0);
+	mScene2->render(auxCam2);
 	*mViewPort = auxVP; // restaurar el puerto de vista
 }
 //-------------------------------------------------------------------------
@@ -165,6 +196,8 @@ void IG1App::key(unsigned char key, int x, int y)
 	case 'k':
 		display2V_ = !display2V_;  // toggles 2 viewport display
 		break;
+	case 'j':
+		display2S_ = !display2S_;
 	case 'p':
 		mCamera->changePrj();	//toggles between orthogonal and perspective view
 		break;

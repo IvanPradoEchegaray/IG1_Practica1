@@ -53,6 +53,7 @@ protected:
 
 	void display();   // the scene
 	void display2V();
+	void display2Scenes();
 	void resize(int newWidth, int newHeight);   // the viewport (without changing the scale) 
 	void key(unsigned char key, int x, int y);  // keypress event
 	void specialKey(int key, int x, int y);     // keypress event for special characters
@@ -71,11 +72,13 @@ protected:
 	static void s_mouseWheel(int n, int d, int x, int y) { s_ig1app.mouseWheel(n, d, x, y); };
 
 	// Viewport position and size
-	Viewport *mViewPort = nullptr;
+	Viewport* mViewPort = nullptr;
 	// Camera position, view volume and projection
-	Camera *mCamera = nullptr;
+	Camera* mCamera = nullptr;
+	Camera* mCamera2 = nullptr;
 	// Graphics objects of the scene
-	Scene *mScene = nullptr;
+	Scene* mScene = nullptr;
+	Scene* mScene2 = nullptr;
 	
 	dvec2 mCoord;
 	int mBot = 0;
@@ -86,6 +89,7 @@ protected:
 	GLuint mLastUpdateTime;			 // ultimo instante de actualiación
 	bool toggleAnimation = false;	 // activar/desactivar la animación
 	bool display2V_ = false;
+	bool display2S_ = false;
 };
 //-------------------------------------------------------------------------
 

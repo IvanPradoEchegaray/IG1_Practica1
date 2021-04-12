@@ -28,6 +28,7 @@ public:
 	int mId = 0;
 	void changeScene(int id);
 	void screenShot();
+	void setID(int id);
 
 protected:
 	void free();
